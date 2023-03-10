@@ -4,7 +4,7 @@
 const todoList = document.querySelector('.todo-list');
 const form = document.querySelector('.input-form');
 const input = document.querySelector('.todo-input');
-const tasks = [];
+const tasks = loadTodos();
 tasks.forEach(addListItems);
 //did optional chaining so that it terminates the function
 form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) => {
@@ -19,9 +19,10 @@ form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) 
         completed: false,
         createdAt: new Date()
     };
-    input.value = "";
     tasks.push(newTask);
+    saveTodos();
     addListItems(newTask);
+    input.value = "";
 });
 function addListItems(tasks) {
     const item = document.createElement('li');
@@ -39,11 +40,11 @@ function addListItems(tasks) {
     todoList === null || todoList === void 0 ? void 0 : todoList.append(item);
 }
 function saveTodos() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('TASKS', JSON.stringify(tasks));
 }
 //Checking for if todos are null and returning []
 function loadTodos() {
-    const taskJSON = localStorage.getItem('tasks');
+    const taskJSON = localStorage.getItem('TASKS');
     if (taskJSON == null)
         return [];
     return JSON.parse(taskJSON);

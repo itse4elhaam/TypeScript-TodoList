@@ -3,7 +3,7 @@
 const todoList = document.querySelector<HTMLUListElement>('.todo-list');
 const form = document.querySelector<HTMLFormElement>('.input-form');
 const input = document.querySelector<HTMLInputElement>('.todo-input');
-const tasks: Task[] = [];
+const tasks: Task[] = loadTodos();
 
 tasks.forEach(addListItems)
 // Known as custom data type, should be used when we're using the same data type alot
@@ -26,10 +26,11 @@ form?.addEventListener('submit', (e) => {
         completed: false,
         createdAt: new Date()
     }
-    input.value = "";
     tasks.push(newTask);
-
+    saveTodos()
+    
     addListItems(newTask)
+    input.value = "";
 });
 
 
@@ -51,12 +52,12 @@ function addListItems(tasks: Task) {
 }
 
 function saveTodos() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('TASKS', JSON.stringify(tasks));
 }
 
 //Checking for if todos are null and returning []
 function loadTodos(): Task[] {
-    const taskJSON = localStorage.getItem('tasks');
+    const taskJSON = localStorage.getItem('TASKS');
     if (taskJSON == null) return []; 
     return JSON.parse(taskJSON);
 }
